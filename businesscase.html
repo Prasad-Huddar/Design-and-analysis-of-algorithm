@@ -424,153 +424,160 @@ transition: transform 0.3s ease;
     <div class="overflow-x-auto bg-gray-800 text-white p-6 rounded-lg shadow-lg transform hover:shadow-xl hover:scale-105 transition duration-300">
       <pre class="whitespace-pre-wrap break-words">
         <code style="color: wheat;">
-          #include &lt;iostream&gt;
-          #include &lt;vector&gt;
-          #include &lt;algorithm&gt;
-          #include &lt;limits.h&gt;
-          #include &lt;queue&gt;
-  
-          using namespace std;
-  
-          // Warshall's Algorithm for Transitive Closure
-          void warshallsAlgorithm(vector&lt;vector&lt;int&gt;&gt; &graph) {
-              int n = graph.size();
-              vector&lt;vector&lt;int&gt;&gt; closure = graph;
-  
-              for (int k = 0; k &lt; n; ++k) {
-                  for (int i = 0; i &lt; n; ++i) {
-                      for (int j = 0; j &lt; n; ++j) {
-                          closure[i][j] = closure[i][j] || (closure[i][k] &amp;&amp; closure[k][j]);
-                      }
-                  }
-              }
-  
-              cout &lt;&lt; "Transitive Closure Matrix:" &lt;&lt; endl;
-              for (const auto &row : closure) {
-                  for (int val : row) {
-                      cout &lt;&lt; val &lt;&lt; " ";
-                  }
-                  cout &lt;&lt; endl;
-              }
-          }
-  
-          // Binary Tree Node for Priority Scheduling
-          struct TreeNode {
-              string key;
-              int priority;
-              TreeNode *left, *right;
-  
-              TreeNode(string k, int p) : key(k), priority(p), left(nullptr), right(nullptr) {}
-          };
-  
-          class BinaryTree {
-          private:
-              TreeNode *root;
-  
-              void insert(TreeNode *&node, string key, int priority) {
-                  if (!node) {
-                      node = new TreeNode(key, priority);
-                      return;
-                  }
-  
-                  if (priority > node->priority) {
-                      insert(node->left, key, priority);
-                  } else {
-                      insert(node->right, key, priority);
-                  }
-              }
-  
-              void inorder(TreeNode *node, vector<pair<string, int>> &result) {
-                  if (!node) return;
-                  inorder(node->left, result);
-                  result.emplace_back(node->key, node->priority);
-                  inorder(node->right, result);
-              }
-  
-          public:
-              BinaryTree() : root(nullptr) {}
-  
-              void insert(string key, int priority) {
-                  insert(root, key, priority);
-              }
-  
-              vector<pair<string, int>> getPriorityOrder() {
-                  vector<pair<string, int>> result;
-                  inorder(root, result);
-                  return result;
-              }
-          };
-  
-          // TSP Solver (Brute Force for Small Inputs)
-          pair<vector<int>, int> tspSolver(const vector<vector<int>> &graph, int start = 0) {
-              int n = graph.size();
-              vector<int> nodes;
-              for (int i = 0; i &lt; n; ++i) {
-                  if (i != start) nodes.push_back(i);
-              }
-  
-              int minCost = INT_MAX;
-              vector<int> bestPath;
-  
-              do {
-                  int currentCost = 0;
-                  vector<int> currentPath = {start};
-                  currentPath.insert(currentPath.end(), nodes.begin(), nodes.end());
-                  currentPath.push_back(start);
-  
-                  bool validPath = true;
-                  for (int i = 0; i &lt; currentPath.size() - 1; ++i) {
-                      int u = currentPath[i], v = currentPath[i + 1];
-                      if (graph[u][v] == 0) {
-                          validPath = false;
-                          break;
-                      }
-                      currentCost += graph[u][v];
-                  }
-  
-                  if (validPath && currentCost &lt; minCost) {
-                      minCost = currentCost;
-                      bestPath = currentPath;
-                  }
-  
-              } while (next_permutation(nodes.begin(), nodes.end()));
-  
-              return {bestPath, minCost};
-          }
-  
-          int main() {
-              // Example Graph (Adjacency Matrix for Roads)
-              vector<vector<int>> graph = {
-                  {0, 10, 15, 0},
-                  {10, 0, 35, 25},
-                  {15, 35, 0, 30},
-                  {0, 25, 30, 0}
-              };
-  
-              cout &lt;&lt; "=== Warshall's Algorithm (Transitive Closure) ===\n";
-              warshallsAlgorithm(graph);
-  
-              cout &lt;&lt; "\n=== Binary Tree for Priority Scheduling ===\n";
-              BinaryTree tree;
-              tree.insert("Bin A", 3);
-              tree.insert("Bin B", 5);
-              tree.insert("Bin C", 2);
-              auto priorityOrder = tree.getPriorityOrder();
-              cout &lt;&lt; "Priority Order:\n";
-              for (const auto &entry : priorityOrder) {
-                  cout &lt;&lt; entry.first &lt;&lt; " (Priority: " &lt;&lt; entry.second &lt;&lt; ")\n";
-              }
-  
-              cout &lt;&lt; "\n=== Traveling Salesperson Problem (TSP) ===\n";
-              auto [tspPath, tspCost] = tspSolver(graph);
-              cout &lt;&lt; "Optimal Path: ";
-              for (int node : tspPath) {
-                  cout &lt;&lt; node &lt;&lt; " ";
-              }
-              cout &lt;&lt; "\nCost: " &lt;&lt; tspCost &lt;&lt; "\n";
-  
-              return 0;
-          }
+          #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+// Warshall's Algorithm for Transitive Closure
+void warshallsAlgorithm(vector<vector<int>> &graph) {
+    int n = graph.size();
+    vector<vector<int>> closure = graph;
+
+    for (int k = 0; k < n; ++k) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                closure[i][j] = closure[i][j] || (closure[i][k] && closure[k][j]);
+            }
+        }
+    }
+
+    cout << "Transitive Closure Matrix:\n";
+    for (const auto &row : closure) {
+        for (int val : row) {
+            cout << val << " ";
+        }
+        cout << "\n";
+    }
+}
+
+// Binary Tree Node for Priority Scheduling
+struct TreeNode {
+    string key;
+    int priority;
+    TreeNode *left, *right;
+
+    TreeNode(string k, int p) : key(k), priority(p), left(nullptr), right(nullptr) {}
+};
+
+class BinaryTree {
+private:
+    TreeNode *root;
+
+    void insert(TreeNode *&node, string key, int priority) {
+        if (!node) {
+            node = new TreeNode(key, priority);
+            return;
+        }
+
+        if (priority > node->priority) {
+            insert(node->left, key, priority);
+        } else {
+            insert(node->right, key, priority);
+        }
+    }
+
+    void inorder(TreeNode *node, vector<pair<string, int>> &result) {
+        if (!node) return;
+        inorder(node->left, result);
+        result.emplace_back(node->key, node->priority);
+        inorder(node->right, result);
+    }
+
+public:
+    BinaryTree() : root(nullptr) {}
+
+    void insert(string key, int priority) {
+        insert(root, key, priority);
+    }
+
+    vector<pair<string, int>> getPriorityOrder() {
+        vector<pair<string, int>> result;
+        inorder(root, result);
+        return result;
+    }
+};
+
+// TSP Solver (Brute Force for Small Inputs)
+pair<vector<int>, int> tspSolver(const vector<vector<int>> &graph, int start = 0) {
+    int n = graph.size();
+    vector<int> nodes;
+    for (int i = 0; i < n; ++i) {
+        if (i != start) nodes.push_back(i);
+    }
+
+    int minCost = INT_MAX;
+    vector<int> bestPath;
+
+    do {
+        int currentCost = 0;
+        vector<int> currentPath = {start};
+        currentPath.insert(currentPath.end(), nodes.begin(), nodes.end());
+        currentPath.push_back(start);
+
+        bool validPath = true;
+        for (int i = 0; i < currentPath.size() - 1; ++i) {
+            int u = currentPath[i], v = currentPath[i + 1];
+            if (graph[u][v] == 0 || graph[u][v] == INT_MAX) {
+                validPath = false;
+                break;
+            }
+            currentCost += graph[u][v];
+        }
+
+        if (validPath && currentCost < minCost) {
+            minCost = currentCost;
+            bestPath = currentPath;
+        }
+
+    } while (next_permutation(nodes.begin(), nodes.end()));
+
+    return {bestPath, minCost};
+}
+
+int main() {
+    // Example Binary Graph for Warshall's Algorithm
+    vector<vector<int>> binaryGraph = {
+        {0, 1, 1, 0},
+        {0, 0, 1, 1},
+        {0, 0, 0, 1},
+        {0, 0, 0, 0}
+    };
+
+    cout << "=== Warshall's Algorithm (Transitive Closure) ===\n";
+    warshallsAlgorithm(binaryGraph);
+
+    cout << "\n=== Binary Tree for Priority Scheduling ===\n";
+    BinaryTree tree;
+    tree.insert("Bin A", 3);
+    tree.insert("Bin B", 5);
+    tree.insert("Bin C", 2);
+    auto priorityOrder = tree.getPriorityOrder();
+    cout << "Priority Order:\n";
+    for (const auto &entry : priorityOrder) {
+        cout << entry.first << " (Priority: " << entry.second << ")\n";
+    }
+
+    cout << "\n=== Traveling Salesperson Problem (TSP) ===\n";
+    vector<vector<int>> weightedGraph = {
+        {0, 10, 15, INT_MAX},
+        {10, 0, 35, 25},
+        {15, 35, 0, 30},
+        {INT_MAX, 25, 30, 0}
+    };
+
+    auto [tspPath, tspCost] = tspSolver(weightedGraph);
+    cout << "Optimal Path: ";
+    for (int node : tspPath) {
+        cout << node << " ";
+    }
+    cout << "\nCost: " << tspCost << "\n";
+
+    return 0;
+}
+
         </code>
       </pre>
     </div>
