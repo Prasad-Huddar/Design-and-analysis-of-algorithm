@@ -424,32 +424,32 @@ transition: transform 0.3s ease;
     <div class="overflow-x-auto bg-gray-800 text-white p-6 rounded-lg shadow-lg transform hover:shadow-xl hover:scale-105 transition duration-300">
       <pre class="whitespace-pre-wrap break-words">
         <code style="color: wheat;">
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <climits>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;climits&gt;
 
 using namespace std;
 
 // Warshall's Algorithm for Transitive Closure
-void warshallsAlgorithm(vector<vector<int>> &graph) {
+void warshallsAlgorithm(vector&lt;vector&lt;int&gt;&gt; &graph) {
     int n = graph.size();
-    vector<vector<int>> closure = graph;
+    vector&lt;vector&lt;int&gt;&gt; closure = graph;
 
-    for (int k = 0; k < n; ++k) {
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n; ++j) {
+    for (int k = 0; k &lt; n; ++k) {
+        for (int i = 0; i &lt; n; ++i) {
+            for (int j = 0; j &lt; n; ++j) {
                 closure[i][j] = closure[i][j] || (closure[i][k] && closure[k][j]);
             }
         }
     }
 
-    cout << "Transitive Closure Matrix:\n";
+    cout &lt;&lt; "Transitive Closure Matrix:\n";
     for (const auto &row : closure) {
         for (int val : row) {
-            cout << val << " ";
+            cout &lt;&lt; val &lt;&lt; " ";
         }
-        cout << "\n";
+        cout &lt;&lt; "\n";
     }
 }
 
@@ -472,18 +472,18 @@ private:
             return;
         }
 
-        if (priority > node->priority) {
-            insert(node->left, key, priority);
+        if (priority &gt; node-&gt;priority) {
+            insert(node-&gt;left, key, priority);
         } else {
-            insert(node->right, key, priority);
+            insert(node-&gt;right, key, priority);
         }
     }
 
-    void inorder(TreeNode *node, vector<pair<string, int>> &result) {
+    void inorder(TreeNode *node, vector&lt;pair&lt;string, int&gt;&gt; &result) {
         if (!node) return;
-        inorder(node->left, result);
-        result.emplace_back(node->key, node->priority);
-        inorder(node->right, result);
+        inorder(node-&gt;left, result);
+        result.emplace_back(node-&gt;key, node-&gt;priority);
+        inorder(node-&gt;right, result);
     }
 
 public:
@@ -493,32 +493,32 @@ public:
         insert(root, key, priority);
     }
 
-    vector<pair<string, int>> getPriorityOrder() {
-        vector<pair<string, int>> result;
+    vector&lt;pair&lt;string, int&gt;&gt; getPriorityOrder() {
+        vector&lt;pair&lt;string, int&gt;&gt; result;
         inorder(root, result);
         return result;
     }
 };
 
 // TSP Solver (Brute Force for Small Inputs)
-pair<vector<int>, int> tspSolver(const vector<vector<int>> &graph, int start = 0) {
+pair&lt;vector&lt;int&gt;, int&gt; tspSolver(const vector&lt;vector&lt;int&gt;&gt; &graph, int start = 0) {
     int n = graph.size();
-    vector<int> nodes;
-    for (int i = 0; i < n; ++i) {
+    vector&lt;int&gt; nodes;
+    for (int i = 0; i &lt; n; ++i) {
         if (i != start) nodes.push_back(i);
     }
 
     int minCost = INT_MAX;
-    vector<int> bestPath;
+    vector&lt;int&gt; bestPath;
 
     do {
         int currentCost = 0;
-        vector<int> currentPath = {start};
+        vector&lt;int&gt; currentPath = {start};
         currentPath.insert(currentPath.end(), nodes.begin(), nodes.end());
         currentPath.push_back(start);
 
         bool validPath = true;
-        for (int i = 0; i < currentPath.size() - 1; ++i) {
+        for (int i = 0; i &lt; currentPath.size() - 1; ++i) {
             int u = currentPath[i], v = currentPath[i + 1];
             if (graph[u][v] == 0 || graph[u][v] == INT_MAX) {
                 validPath = false;
@@ -527,7 +527,7 @@ pair<vector<int>, int> tspSolver(const vector<vector<int>> &graph, int start = 0
             currentCost += graph[u][v];
         }
 
-        if (validPath && currentCost < minCost) {
+        if (validPath && currentCost &lt; minCost) {
             minCost = currentCost;
             bestPath = currentPath;
         }
@@ -539,29 +539,29 @@ pair<vector<int>, int> tspSolver(const vector<vector<int>> &graph, int start = 0
 
 int main() {
     // Example Binary Graph for Warshall's Algorithm
-    vector<vector<int>> binaryGraph = {
+    vector&lt;vector&lt;int&gt;&gt; binaryGraph = {
         {0, 1, 1, 0},
         {0, 0, 1, 1},
         {0, 0, 0, 1},
         {0, 0, 0, 0}
     };
 
-    cout << "=== Warshall's Algorithm (Transitive Closure) ===\n";
+    cout &lt;&lt; "=== Warshall's Algorithm (Transitive Closure) ===\n";
     warshallsAlgorithm(binaryGraph);
 
-    cout << "\n=== Binary Tree for Priority Scheduling ===\n";
+    cout &lt;&lt; "\n=== Binary Tree for Priority Scheduling ===\n";
     BinaryTree tree;
     tree.insert("Bin A", 3);
     tree.insert("Bin B", 5);
     tree.insert("Bin C", 2);
     auto priorityOrder = tree.getPriorityOrder();
-    cout << "Priority Order:\n";
+    cout &lt;&lt; "Priority Order:\n";
     for (const auto &entry : priorityOrder) {
-        cout << entry.first << " (Priority: " << entry.second << ")\n";
+        cout &lt;&lt; entry.first &lt;&lt; " (Priority: " &lt;&lt; entry.second &lt;&lt; ")\n";
     }
 
-    cout << "\n=== Traveling Salesperson Problem (TSP) ===\n";
-    vector<vector<int>> weightedGraph = {
+    cout &lt;&lt; "\n=== Traveling Salesperson Problem (TSP) ===\n";
+    vector&lt;vector&lt;int&gt;&gt; weightedGraph = {
         {0, 10, 15, INT_MAX},
         {10, 0, 35, 25},
         {15, 35, 0, 30},
@@ -569,14 +569,15 @@ int main() {
     };
 
     auto [tspPath, tspCost] = tspSolver(weightedGraph);
-    cout << "Optimal Path: ";
+    cout &lt;&lt; "Optimal Path: ";
     for (int node : tspPath) {
-        cout << node << " ";
+        cout &lt;&lt; node &lt;&lt; " ";
     }
-    cout << "\nCost: " << tspCost << "\n";
+    cout &lt;&lt; "\nCost: " &lt;&lt; tspCost &lt;&lt; "\n";
 
     return 0;
 }
+
 
         </code>
       </pre>
